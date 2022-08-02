@@ -1,4 +1,3 @@
-from fileinput import filename
 from flask import Blueprint, flash, render_template, request, url_for, redirect, make_response
 from flask_login import login_required, current_user
 
@@ -16,33 +15,15 @@ from werkzeug.security import generate_password_hash
 
 
 views = Blueprint('views', __name__)
-if platform.system() == 'Windows':
+
+
+if platform.system() == "Windows":
     pdfkit_config = pdfkit.configuration(wkhtmltopdf=os.environ.get('WKHTMLTOPDF_BINARY', 'C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe'))
 else:
-    WKHTMLTOPDF_CMD = subprocess.Popen(['which', os.environ.get('WKHTMLTOPDF_BINARY', 'wkhtmltopdf')], stdout=subprocess.PIPE).communicate()[0].strip()
+    os.environ['PATH'] += os.pathsep + os.path.dirname(sys.executable) 
+    WKHTMLTOPDF_CMD = subprocess.Popen(['which', os.environ.get('WKHTMLTOPDF_BINARY', 'wkhtmltopdf')], 
+        stdout=subprocess.PIPE).communicate()[0].strip()
     pdfkit_config = pdfkit.configuration(wkhtmltopdf=WKHTMLTOPDF_CMD)
-
-
-# persiapan wkhtmltopdf (linux or windows)
-# import sys, platform
-# if platform.system() == "Windows":
-#         pdfkit_config = pdfkit.configuration(wkhtmltopdf=os.environ.get('WKHTMLTOPDF_BINARY', 'C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe'))
-# else:
-#         os.environ['PATH'] += os.pathsep + os.path.dirname(sys.executable) 
-#         WKHTMLTOPDF_CMD = subprocess.Popen(['which', os.environ.get('WKHTMLTOPDF_BINARY', 'wkhtmltopdf')], 
-#             stdout=subprocess.PIPE).communicate()[0].strip()
-#         pdfkit_config = pdfkit.configuration(wkhtmltopdf=WKHTMLTOPDF_CMD)
-
-# import os, subprocess
-# if 'DYNO' in os.environ:
-#     print ('loading wkhtmltopdf path on heroku')
-#     WKHTMLTOPDF_CMD = subprocess.Popen(
-#         ['which', os.environ.get('WKHTMLTOPDF_BINARY', 'wkhtmltopdf-pack-ng')], # Note we default to 'wkhtmltopdf' as the binary name
-#         stdout=subprocess.PIPE).communicate()[0].strip()
-# else:
-#     print ('loading wkhtmltopdf path on localhost')
-#     MYDIR = os.path.dirname(__file__)    
-#     WKHTMLTOPDF_CMD = os.path.join(MYDIR + "/static/executables/bin/", "wkhtmltopdf.exe")
 
 
 # ---- staff acessible part of the application ----
