@@ -16,7 +16,7 @@ from werkzeug.security import generate_password_hash
 
 views = Blueprint('views', __name__)
 WKHTMLTOPDF_CMD = '/app/bin/wkhtmltopdf'
-pdfkit_config = WKHTMLTOPDF_CMD
+pdfkit_config = pdfkit.configuration(wkhtmltopdf=WKHTMLTOPDF_CMD)
 
 
 # ---- staff acessible part of the application ----
