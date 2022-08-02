@@ -7,5 +7,4 @@ SQLAlchemy==1.4.32
 Werkzeug==2.1.1
 WTForms==3.0.1
 wkhtmltopdf-pack==0.12.3.0.post1
-pdfkit==0.6.0
 gunicorn==20.1.0
