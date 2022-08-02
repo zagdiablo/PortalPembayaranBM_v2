@@ -7,7 +7,7 @@ import sqlalchemy
 
 from .models import db, Staff
 from .forms import Login
-from .secret import ADMIN_PASSWORD
+from .secret import ADMIN_PASSWORD, FITRY_PASSWORD
 
 
 auth = Blueprint('auth', __name__)
@@ -34,7 +34,25 @@ def create_admin():
     )
     db.session.add(admin)
     db.session.commit()
-    print('+++++ admin generated +++++')
+
+    check_fitry = Staff.query.filter_by(username='fitry').first()
+    if check_fitry:
+        print('----- fitry already exist -----')
+        return
+
+    print('##### Generating fitry #####')
+    fitry = Staff(
+        first_name = 'Fitry',
+        last_name = 'Auliaallah',
+        username = 'fitry',
+        password = generate_password_hash(FITRY_PASSWORD, method='sha256'),
+        email = 'email@email.com',
+        phone_number = '1',
+        isAdmin = False
+    )
+    db.session.add(fitry)
+    db.session.commit()
+    print('+++++ fitry generated +++++')
 
 
 # otentikasi user menggunakan class wtform login() dari forms.py
