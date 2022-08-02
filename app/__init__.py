@@ -4,6 +4,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_wtf import CSRFProtect
 from .secret import SECRET_KEY
+from flask_sslify import SSLify
+import os
 
 
 db = SQLAlchemy()
@@ -37,6 +39,9 @@ def start_app():
 
     app.register_blueprint(auth, url_prefix='/')
     app.register_blueprint(views, url_prefix='/')
+
+    if 'DYNO' in os.environ: # only trigger SSLify if the app is running on Heroku
+        sslify = SSLify(app)
 
     return app
 
