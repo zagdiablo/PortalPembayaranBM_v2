@@ -323,8 +323,7 @@ def cetak_kartu(client_id, year):
         monthly_payment_date.append(the_month.date_paid)
 
     rendered = render_template('cetakkartu.html', logo=get_absolute_path('app/static/img/logo_bm.png'), client=client, year=year, year_list=year_list, months=month_in_year, 
-            month_payment_data=zip(payment_data, month_in_year, monthly_payment_date), staff_list=staff_list, 
-            configuration=pdfkit_config)
+            month_payment_data=zip(payment_data, month_in_year, monthly_payment_date), staff_list=staff_list)
 
     options = {'enable-local-file-access':True}
     pdf = pdfkit.from_string(rendered, False ,options=options, css='app/static/css/cetakkartu.css')
