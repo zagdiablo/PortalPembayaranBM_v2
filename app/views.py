@@ -12,6 +12,8 @@ from werkzeug.security import generate_password_hash
 
 
 views = Blueprint('views', __name__)
+WKHTMLTOPDF_CMD = '/app/bin'
+pdfkit_config = pdfkit.configuration(wkhtmltopdf=WKHTMLTOPDF_CMD)
 
 
 # persiapan wkhtmltopdf (linux or windows)
@@ -23,17 +25,6 @@ views = Blueprint('views', __name__)
 #         WKHTMLTOPDF_CMD = subprocess.Popen(['which', os.environ.get('WKHTMLTOPDF_BINARY', 'wkhtmltopdf')], 
 #             stdout=subprocess.PIPE).communicate()[0].strip()
 #         pdfkit_config = pdfkit.configuration(wkhtmltopdf=WKHTMLTOPDF_CMD)
-
-import os, subprocess
-if 'DYNO' in os.environ:
-    print ('loading wkhtmltopdf path on heroku')
-    WKHTMLTOPDF_CMD = subprocess.Popen(
-        ['which', os.environ.get('WKHTMLTOPDF_BINARY', 'wkhtmltopdf-pack-ng')], # Note we default to 'wkhtmltopdf' as the binary name
-        stdout=subprocess.PIPE).communicate()[0].strip()
-else:
-    print ('loading wkhtmltopdf path on localhost')
-    MYDIR = os.path.dirname(__file__)    
-    WKHTMLTOPDF_CMD = os.path.join(MYDIR + "/static/executables/bin/", "wkhtmltopdf.exe")
 
 # import os, subprocess
 # if 'DYNO' in os.environ:
@@ -337,7 +328,7 @@ def cetak_kartu(client_id, year):
             month_payment_data=zip(payment_data, month_in_year, monthly_payment_date), staff_list=staff_list)
 
     options = {'enable-local-file-access':True}
-    pdf = pdfkit.from_string(rendered, False ,options=options, css='app/static/css/cetakkartu.css')
+    pdf = pdfkit.from_string(rendered, False, options=options, configuration=pdfkit_config, css='app/static/css/cetakkartu.css')
 
     response = make_response(pdf)   
     response.headers['Content-Type'] = 'application/pdf'
@@ -374,7 +365,7 @@ def cetak_kuitansi(client_id, year, kuitansi_id):
     rendered = render_template('cetakkuitansi.html', logo=get_absolute_path('app/static/img/logo_bm.png'), client=client, year=year, year_list=year_list, kuitansi=kuitansi, months=month_in_year, 
             month_payment_data=zip(payment_data, month_in_year, monthly_payment_date), staff_list=staff_list)
     options = {'enable-local-file-access':True}
-    pdf = pdfkit.from_string(rendered, False ,options=options, css='app/static/css/cetakkuitansi.css')
+    pdf = pdfkit.from_string(rendered, False, options=options, configuration=pdfkit_config, css='app/static/css/cetakkuitansi.css')
 
     response = make_response(pdf)
     response.headers['Content-Type'] = 'application/pdf'
