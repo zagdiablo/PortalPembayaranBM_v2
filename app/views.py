@@ -3,13 +3,9 @@ from flask_login import login_required, current_user
 
 import sqlalchemy
 import pdfkit
-# import os
-# import subprocess
-# import platform
-# import sys
 
 from .models import db, Staff, Client, Year, Month, PaymentData
-from .module import format_name,  get_absolute_path
+from .module import format_name
 from datetime import date, datetime, timedelta
 from werkzeug.security import generate_password_hash
 
