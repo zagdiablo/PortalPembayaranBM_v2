@@ -12,7 +12,7 @@ from werkzeug.security import generate_password_hash
 
 
 views = Blueprint('views', __name__)
-WKHTMLTOPDF_CMD = '/app/bin'
+WKHTMLTOPDF_CMD = '/app/bin/wkhtmltopdf'
 pdfkit_config = pdfkit.configuration(wkhtmltopdf=WKHTMLTOPDF_CMD)
 
 
