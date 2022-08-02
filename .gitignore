@@ -2,3 +2,4 @@
 /app/static/css/*.scss
 /app/static/css/*.css.map
 .git
+app.db
