@@ -305,7 +305,7 @@ def cetak_kartu(client_id, year):
         the_month = PaymentData.query.filter_by(payer=client.id, paid_year=year_object.id, paid_month=num+1).first()
         monthly_payment_date.append(the_month.date_paid)
 
-    rendered = render_template('cetakkartu.html', logo=get_absolute_path('app/static/img/logo_bm.png'), client=client, year=year, year_list=year_list, months=month_in_year, 
+    rendered = render_template('cetakkartu.html', client=client, year=year, year_list=year_list, months=month_in_year, 
             month_payment_data=zip(payment_data, month_in_year, monthly_payment_date), staff_list=staff_list)
 
     options = {'load-error-handling':'ignore'}
@@ -343,7 +343,7 @@ def cetak_kuitansi(client_id, year, kuitansi_id):
         flash('Pembayaran belum lunas.', category='error')
         return redirect(url_for('views.display_data_pembayaran', client_id=client_id, year=year))
 
-    rendered = render_template('cetakkuitansi.html', logo=get_absolute_path('app/static/img/logo_bm.png'), client=client, year=year, year_list=year_list, kuitansi=kuitansi, months=month_in_year, 
+    rendered = render_template('cetakkuitansi.html', client=client, year=year, year_list=year_list, kuitansi=kuitansi, months=month_in_year, 
             month_payment_data=zip(payment_data, month_in_year, monthly_payment_date), staff_list=staff_list)
     options = {'load-error-handling':'ignore'}
     pdf = pdfkit.from_string(rendered, False, configuration=pdfkit_config, css='app/static/css/cetakkuitansi.css', options=options)
