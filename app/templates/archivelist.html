@@ -1,0 +1,46 @@
+{% extends 'base-dashboard.html' %}
+
+
+{% block extra_style %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/archivelist.css') }}">
+{% endblock %}
+
+
+{% block content %}
+    <div id="archive_list_container">
+        <h3>Archive client</h3>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    {% if category == 'error' %}
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% elif category == 'success' %}
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="list-group">
+            {% for client in clients %}
+                {% if client.is_archived %}
+                    <div id="client_bar" style="display: flex;">
+                        <a href="/datapembayaran/{{client.id}}" class="list-group-item list-group-item-action">
+                            {{client.first_name}} {{client.last_name}} ({{client.call_name}})
+                        </a>
+                        <a href="/unarchive/{{ client.id }}" id="trash_button" type="button" class="btn btn-danger btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Keluarkan dari archive">
+                            <i class="bi bi-arrow-left-square"></i>
+                        </a>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

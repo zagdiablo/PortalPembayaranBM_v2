@@ -1,0 +1,1 @@
+document.getElementById('adminpanel_button').style.display = 'none';

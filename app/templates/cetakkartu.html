@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cetak kartu</title>
+</head>
+<body>
+    <article id="page2-cetak-kartu-preview">
+        <div id="cetak-kartu-scroll">
+            <div id="cetak-kartu-table-container">
+                <div id="cetak-kartu-table-top">
+                    <div id="cetak-kartu-img-container">
+                        <img src='{{ logo }}' alt="logo">
+                    </div>
+                    <h2>KARTU PEMBAYARAN {{ year }}</h2>
+                </div>
+    
+                <h3 id="cetak-kartu-nama-client">
+                    Nama: {{ client.first_name }} {{ client.last_name }}
+                </h3>
+                <table id="cetak-kartu-preview-table">
+                    <tr>
+                        <th id="no">No</th>
+                        <th>Bulan</th>
+                        <th>Tanggal</th>
+                        <th>Status</th>
+                        <th>Paraf</th>
+                    </tr>
+                    {% for payment_data, month, paid_date in month_payment_data %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ month.month_name }}</td>
+                        <td>
+                            {% if paid_date %}
+                                {{ paid_date }}
+                            {% else %}
+                                <p></p>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if payment_data.states == 'belum lunas' %}
+                                    <p style="color: red; font-weight: bold;">Belum lunas</p>
+                                {% elif payment_data.states == 'lunas' %}
+                                    <p style="color: green; font-weight: bold;">Lunas</p>
+                                {% elif payment_data.states == 'tidak les' %}
+                                    <p style="color: blue; font-weight: bold;">Tidak les</p>
+                                {% elif payment_data.states == 'belum belajar' %}
+                                    <p style="color: purple; font-weight: bold;">Belum belajar</p>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% for staff in staff_list %}
+                                {% if staff.id == payment_data.last_edit_by %}
+                                    {% if payment_data.states == 'lunas' %}
+                                        {{ staff.first_name }} {{ staff.last_name }}
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+                <p>
+                    <b>Catatan:</b><i> Mohon pembayaran dilakukan sebelum tanggal 7 setiap bulan.</i>
+                </p>
+            </div>
+        </div>
+    </article>
+</body>
+</html>

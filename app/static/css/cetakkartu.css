@@ -1,0 +1,84 @@
+#page2-cetak-kartu-preview {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+#page2-cetak-kartu-preview #cetak-kartu-scroll {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 1em;
+  width: 95%;
+  height: 67em;
+}
+
+#page2-cetak-kartu-preview #cetak-kartu-scroll #cetak-kartu-table-container {
+  width: 100%;
+  height: -webkit-max-content;
+  height: -moz-max-content;
+  height: max-content;
+  padding: 0em 1em 1em 1em;
+  border: 1px solid black;
+}
+
+#page2-cetak-kartu-preview #cetak-kartu-scroll #cetak-kartu-table-container #cetak-kartu-nama-client {
+  font-weight: bold;
+  margin-bottom: 0.5em;
+}
+
+#page2-cetak-kartu-preview #cetak-kartu-scroll #cetak-kartu-table-container #cetak-kartu-table-top {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+#page2-cetak-kartu-preview #cetak-kartu-scroll #cetak-kartu-table-container #cetak-kartu-table-top #cetak-kartu-img-container {
+  width: 500px;
+  height: auto;
+  padding: 0.5em 0em 0em 0em;
+  margin-top: 0.5em;
+}
+
+#page2-cetak-kartu-preview #cetak-kartu-scroll #cetak-kartu-table-container #cetak-kartu-table-top #cetak-kartu-img-container img {
+  width: inherit;
+  height: inherit;
+}
+
+#page2-cetak-kartu-preview #cetak-kartu-scroll #cetak-kartu-table-container #cetak-kartu-preview-table {
+  width: 100%;
+  width: 100%;
+  min-width: 480px;
+  border-spacing: 0;
+  border-collapse: collapse;
+  table-layout: fixed;
+  border: 1px solid black;
+}
+
+#page2-cetak-kartu-preview #cetak-kartu-scroll #cetak-kartu-table-container #cetak-kartu-preview-table #no {
+  width: 40px;
+}
+
+#page2-cetak-kartu-preview #cetak-kartu-scroll #cetak-kartu-table-container #cetak-kartu-preview-table th {
+  background-color: none;
+  border: 1px solid black;
+  padding: 0.5em 0em 0.5em 0em;
+}
+
+#page2-cetak-kartu-preview #cetak-kartu-scroll #cetak-kartu-table-container #cetak-kartu-preview-table td {
+  text-align: left;
+  border: 1px solid black;
+  padding: 0.3em 0em 0.3em 0.3em;
+}
+/*# sourceMappingURL=cetakkartu.css.map */

@@ -1,0 +1,65 @@
+{% extends 'base-dashboard.html' %}
+
+
+{% block extra_style %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+{% endblock %}
+
+
+{% block content %}
+    <div id="dashboard_container">
+        <h3>History input data</h3>
+        <div id="dashboard_table">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Nama Client</th>
+                        <th scope="col">Bulan</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Editor</th>
+                        <th scope="col">Tanggal edit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for payment_data in history_data %}
+                        <tr>
+                            <td>
+                                {% for client in client_data %}
+                                    {% if client.id == payment_data.payer %}
+                                        {{ client.call_name}}
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
+                            <td>
+                                {% for month in month_data %}
+                                    {% if month.id == payment_data.paid_month %}
+                                        {{ month.month_name }}
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
+                            <td>
+                                {% if payment_data.states == 'belum lunas' %}
+                                    <p style="color: red; font-weight: bold;">Belum lunas</p>
+                                {% elif payment_data.states == 'lunas' %}
+                                    <p style="color: green; font-weight: bold;">Lunas</p>
+                                {% elif payment_data.states == 'tidak les' %}
+                                    <p style="color: blue; font-weight: bold;">Tidak les</p>
+                                {% elif payment_data.states == 'belum belajar' %}
+                                    <p style="color: purple; font-weight: bold;">Belum belajar</p>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% for staff in staff_data %}
+                                    {% if staff.id == payment_data.last_edit_by %}
+                                        {{staff.first_name}}
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
+                            <td> {{ payment_data.last_edit_date }} </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

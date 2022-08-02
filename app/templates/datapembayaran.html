@@ -1,0 +1,160 @@
+{% extends 'base-dashboard.html' %}
+
+
+{% block extra_style %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/datapembayaran.css') }}">
+{% endblock %}
+
+
+{% block content %}
+    <div id="client-info-tab">
+        <h1>{{client.first_name}} {{client.last_name}} ({{client.call_name}})</h1>
+
+        <div id="client_info_button">
+            <div class="dropdown">
+                <a class="btn btn-danger dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                    {{ year_button_display }}
+                </a>
+            
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    {% for year in year_list %}
+                        <li><a class="dropdown-item" href="/datapembayaran/{{client.id}}/{{ year.year_name }}">{{ year.year_name }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+    
+            {% if display_table %}
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-danger btn-md" data-bs-toggle="modal" data-bs-target="#cetak_kartu">
+                    Cetak kartu
+                </button>
+                
+                <!-- Modal -->
+                <div class="modal fade" id="cetak_kartu" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Cetak kartu ({{ client.call_name }})</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                Pilih mode cetak
+                            </div>
+                            <div class="modal-footer">
+                                <a target="_blank" href="/cetakkartu/pdf/{{ client.id }}/{{ year_button_display }}" type="button" class="btn btn-danger">Cetak PDF</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    {% if display_table %}
+        <div id="data_pembayaran_table_container">
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        {% if category == 'error' %}
+                            <div style="position: absolute; margin: 1em;" class="alert alert-danger alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% elif category == 'success' %}
+                            <div class="alert alert-danger d-flex align-items-center" role="alert">
+                                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                                <div>
+                                    {{ message }}
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <form action="#" method="post" id="data_pembayaran_table">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Bulan</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Tanggal Bayar</th>
+                            <th scope="col">Last Editor</th>
+                            <th scope="col">Tanggal Edit</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for payment_data, month, paid_date in month_payment_data %}
+                            <tr>
+                                <td>{{ month.month_name }}</td>
+                                {% if payment_data.states == 'belum lunas' %}
+                                    <td id="payment_states" style="background-color: red;">
+                                        <select name="month{{ month.id }}" id="month">
+                                            <option selected value="belum lunas">Belum lunas</option>
+                                            <option value="lunas">Lunas</option>
+                                            <option value="tidak les">Tidak les</option>
+                                            <option value="belum belajar">Belum belajar (BM Home)</option>
+                                        </select>
+                                    </td>
+                                {% elif payment_data.states == 'lunas' %}
+                                    <td id="payment_states" style="background-color: green;">
+                                        <select name="month{{ month.id }}" id="month">
+                                            <option selected value="lunas">Lunas</option>
+                                            <option value="belum lunas">Belum lunas</option>
+                                            <option value="tidak les">Tidak les</option>
+                                            <option value="belum belajar">Belum belajar (BM Home)</option>
+                                        </select>
+                                    </td>
+                                {% elif payment_data.states == 'tidak les' %}
+                                    <td id="payment_states" style="background-color: blue;">
+                                        <select name="month{{ month.id }}" id="month">
+                                            <option selected value="tidak les">Tidak les</option>
+                                            <option value="belum lunas">Belum lunas</option>
+                                            <option value="lunas">Lunas</option>
+                                            <option value="belum belajar">Belum belajar (BM Home)</option>
+                                        </select>
+                                    </td>
+                                {% elif payment_data.states == 'belum belajar' %}
+                                    <td id="payment_states" style="background-color: purple;">
+                                        <select name="month{{ month.id }}" id="month">
+                                            <option selected value="belum belajar">Belum belajar (BM Home)</option>
+                                            <option value="belum lunas">Belum lunas</option>
+                                            <option value="lunas">Lunas</option>
+                                            <option value="tidak les">Tidak les</option>
+                                        </select>
+                                    </td>
+                                {% endif %}
+                                <td>
+                                    <input type="text" name="tanggal_bayar{{ month.id }}" placeholder="{{ paid_date }}"
+                                    onfocus="this.type='date'"
+                                    onblur="this.type='text'">
+                                </td>
+                                {% for staff in staff_list %}
+                                    {% if staff.id == payment_data.last_edit_by %}
+                                        <td>{{staff.first_name}}</td>
+                                    {% endif %}
+                                {% endfor %}
+                                <td>{{ payment_data.last_edit_date }}</td>
+                                <td>
+                                    <a href="/cetakkuitansi/pdf/{{ client.id }}/{{ year_button_display }}/{{ payment_data.id }}" target="_blank" class="btn btn-danger btn-sm" role="button">
+                                        <i class="bi bi-printer"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>    
+                </table>
+            </form>
+            <input type="submit" class="btn btn-danger" value="Simpan" id="simpan_button" form="data_pembayaran_table">
+        </div>
+    {% else %}
+        <div id="data_pembayaran_table_container">
+            <div id="empty_identifier">
+                <h3>Silahkan pilih tahun</h3>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

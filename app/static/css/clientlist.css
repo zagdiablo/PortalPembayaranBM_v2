@@ -1,0 +1,38 @@
+#top-clientlist-container {
+  margin: 0 0 0.5em 1em;
+}
+
+#client_list_container {
+  width: 97%;
+  height: 95%;
+  margin: 1em 1em 1em 1em;
+  padding: 1em 1em 1em 1em;
+  -webkit-box-shadow: 0 0 1px 0 black;
+          box-shadow: 0 0 1px 0 black;
+  overflow-y: scroll;
+}
+
+#client_list_container #client_bar {
+  margin-bottom: 0.5em;
+}
+
+#client_list_container #client_bar #trash_button {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin: 0.1em 0 0.1em 0.5em;
+}
+
+@media only screen and (max-width: 400px) {
+  #client_list_container {
+    width: 93%;
+    height: 95%;
+  }
+}
+/*# sourceMappingURL=clientlist.css.map */

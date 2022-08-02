@@ -1,0 +1,1 @@
+document.getElementById('greeter-container').style.display = 'none';

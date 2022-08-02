@@ -1,0 +1,64 @@
+{% extends 'base-dashboard.html' %}
+
+
+{% block extra_style %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/editprofile.css') }}">
+{% endblock %}
+
+
+{% block content %}
+    <h2 id="greeter">Hello, {{ client_name }}</h2>
+    <div id="edit_profile_container">
+        <h3>Edit Profil</h3>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    {% if category == 'error' %}
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% elif category == 'success' %}
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form id="edit_profile_form" action="#" method="post">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+            <div class="mb-3">
+                <label for="username-input" class="form-label">Ubah username</label>
+                <input type="text" name="username" class="form-control" id="username-input">
+            </div>
+            <div class="mb-3">
+                <label for="password1-input" class="form-label">Ubah password</label>
+                <input type="password" name="password1" class="form-control" id="password1-input">
+            </div>
+            <div class="mb-3">
+                <label for="password2-input" class="form-label">Confirm password</label>
+                <input type="password" name="password2" class="form-control" id="password2-input">
+            </div>
+            <div class="mb-3">
+                <label for="email-input" class="form-label">Ubah email</label>
+                <input type="email" name="email" class="form-control" id="email-input">
+            </div>
+            <div class="mb-3">
+                <label for="phone-number-input" class="form-label">Ubah nomor telpon</label>
+                <input type="number" name="phone_number" class="form-control" id="phone-number-input">
+            </div>
+            <div class="mb-3">
+                <label for="paraf-img" class="form-label">Ganti gambar paraf</label>
+                <input type="text" name="praf_img" class="form-control" id="paraf-img">
+            </div>
+            <button type="submit" class="btn btn-danger">Simpan</button>
+        </form>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/editprofile.js') }}"></script>
+{% endblock %}

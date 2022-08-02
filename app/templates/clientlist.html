@@ -1,0 +1,53 @@
+{% extends 'base-dashboard.html' %}
+
+
+{% block extra_style %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/clientlist.css') }}">
+{% endblock %}
+
+
+{% block content %}
+    <div id="top-clientlist-container">
+        <a href="/addclientdata" class="btn btn-danger btn-md" tabindex="-1" role="button" id="tambah-client-button">
+            Tambah Client Baru
+        </a>
+        <a href="/archivelist" class="btn btn-secondary btn-md" tabindex="-1" role="button" id="tambah-client-button">
+            Archive
+        </a>
+    </div>
+
+    <div id="client_list_container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    {% if category == 'error' %}
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% elif category == 'success' %}
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="list-group">
+            {% for client in clients %}
+                {% if not client.is_archived %}
+                    <div id="client_bar" style="display: flex;">
+                        <a href="/datapembayaran/{{client.id}}" class="list-group-item list-group-item-action">
+                            {{client.first_name}} {{client.last_name}} ({{client.call_name}})
+                        </a>
+                        <a href="/archive/{{ client.id }}" id="trash_button" type="button" class="btn btn-danger btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Masukan ke archive">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

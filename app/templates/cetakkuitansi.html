@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cetak kuitansi</title>
+</head>
+<body>
+    <div id="kuitansi_container">
+        <div id="kuitansi_img">
+            <img src="{{ logo }}" alt="logo">
+        </div>
+
+        <h3>Kuitansi Pembayaran Tahun {{ year }}</h3>
+
+        <div id="content">
+            <p><span class="identifier">Sudah terima dari:</span> <u>{{ client.first_name }} {{ client.last_name }}</u></p>
+            <p>
+                {% for month in months %}
+                    {% if month.id == kuitansi.paid_month %}
+                        <span class="identifier">Pembayaran bulan:</span> <u>{{ month.month_name }}</u>
+                    {% endif %}
+                {% endfor %}
+            </p>
+            <p><span class="identifier">Pada tanggal:</span> <u>{{ kuitansi.date_paid }}</u></p>
+        </div>
+        <div id="sign">
+            <div id="sign_content">
+                <p><span class="identifier">Penerima:</span></p>
+                <p>
+                    {% for staff in staff_list %}
+                        {% if staff.id == kuitansi.last_edit_by %}
+                            <b>{{ staff.first_name }} {{ staff.last_name }}</b>
+                        {% endif %}
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

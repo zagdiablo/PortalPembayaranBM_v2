@@ -1,0 +1,61 @@
+#client-info-tab {
+  margin: 0 1em 0 1em;
+  padding: 0 1em 0 1em;
+}
+
+#client-info-tab #client_info_button {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+#data_pembayaran_table_container {
+  width: 97%;
+  height: 73%;
+  margin: 1em 1em 1em 1em;
+  padding: 1em 1em 1em 1em;
+  -webkit-box-shadow: 0 0 1px 0 black;
+          box-shadow: 0 0 1px 0 black;
+}
+
+#data_pembayaran_table_container #data_pembayaran_table {
+  width: 100%;
+  height: 90%;
+  overflow: scroll;
+}
+
+#data_pembayaran_table_container #simpan_button {
+  margin-top: 1em;
+}
+
+#empty_identifier {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  height: 100%;
+}
+
+#empty_identifier h3 {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+@media only screen and (max-width: 400px) {
+  #data_pembayaran_table_container {
+    width: 92%;
+    height: 68%;
+  }
+}
+/*# sourceMappingURL=datapembayaran.css.map */

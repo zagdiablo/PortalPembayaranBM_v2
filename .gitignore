@@ -1,0 +1,4 @@
+/app/__pycache__
+/app/static/css/*.scss
+/app/static/css/*.css.map
+.git

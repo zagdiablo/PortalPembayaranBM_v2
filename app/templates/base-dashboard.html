@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base-dashboard.css') }}">
+
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+
+
+    <!-- google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;700&display=swap" rel="stylesheet">
+
+    {% block extra_style %} {% endblock %}
+    <title>Portal Data Pembayaran BM Homeschooling & Bimble</title>
+</head>
+<body>
+    <header id="side-navigation">
+        <button id="side-nav-hide-button">
+            <i class="bi bi-x-square"></i>
+        </button>
+
+        <h1 id="title">Dashboard</h1>
+
+        <nav id="navigation-container">
+            <button onclick="goto_home()" class="navigation-item" id="home">
+                <p><i class="bi bi-house-door"></i>&#8287;&#8287; Home</p>
+            </button>
+            <button onclick="goto_clientlist()" class="navigation-item" id="data-pembayaran">
+               <p><i class="bi bi-credit-card-2-front"></i>&#8287;&#8287; Data Pembayaran</p>
+            </button>
+            <button class="navigation-item" id="keluar">
+                <p><i class="bi bi-box-arrow-left"></i>&#8287;&#8287; Keluar</p>
+            </button>
+        </nav>
+    </header>
+
+    <main>
+        <div id="top-greet">
+            <button id="side-nav-show-button">
+                <i class="bi bi-list"></i>
+            </button>
+
+            <div id="greeter-container">
+                <p id="greeter"><span style="font-weight: bold;">
+                    Hello,</span> {{ current_staff.username }}
+                </p>
+                <a href="/editprofile" id="edit-profile-link">Edit profil</a>
+            </div>
+            {% if current_staff.isAdmin %}
+                <a href="/adminpanel" class="btn btn-danger btn-md" role="button" id="adminpanel_button">Admin panel</a>
+            {% endif %}
+        </div>
+
+        {% block content %}{% endblock %}
+
+    </main>
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+
+    <!-- Bootstrap js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+</body>
+</html>
