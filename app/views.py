@@ -28,7 +28,7 @@ import os, subprocess
 if 'DYNO' in os.environ:
     print ('loading wkhtmltopdf path on heroku')
     WKHTMLTOPDF_CMD = subprocess.Popen(
-        ['which', os.environ.get('WKHTMLTOPDF_BINARY', 'wkhtmltopdf-pack')], # Note we default to 'wkhtmltopdf' as the binary name
+        ['which', os.environ.get('WKHTMLTOPDF_BINARY', 'wkhtmltopdf-pack-ng')], # Note we default to 'wkhtmltopdf' as the binary name
         stdout=subprocess.PIPE).communicate()[0].strip()
 else:
     print ('loading wkhtmltopdf path on localhost')
