@@ -309,7 +309,7 @@ def cetak_kartu(client_id, year):
             month_payment_data=zip(payment_data, month_in_year, monthly_payment_date), staff_list=staff_list)
 
     options = {'load-error-handling':'ignore', 'enable-local-file-access':True}
-    pdf = pdfkit.from_string(rendered, False, options, configuration=pdfkit_config, css='app/static/css/cetakkartu.css')
+    pdf = pdfkit.from_string(rendered, False, configuration=pdfkit_config, css='app/static/css/cetakkartu.css', options=options)
 
     response = make_response(pdf)   
     response.headers['Content-Type'] = 'application/pdf'
@@ -346,7 +346,7 @@ def cetak_kuitansi(client_id, year, kuitansi_id):
     rendered = render_template('cetakkuitansi.html', logo=get_absolute_path('app/static/img/logo_bm.png'), client=client, year=year, year_list=year_list, kuitansi=kuitansi, months=month_in_year, 
             month_payment_data=zip(payment_data, month_in_year, monthly_payment_date), staff_list=staff_list)
     options = {'load-error-handling':'ignore', 'enable-local-file-access':True}
-    pdf = pdfkit.from_string(rendered, False, options, configuration=pdfkit_config, css='app/static/css/cetakkuitansi.css')
+    pdf = pdfkit.from_string(rendered, False, configuration=pdfkit_config, css='app/static/css/cetakkuitansi.css', options=options)
 
     response = make_response(pdf)
     response.headers['Content-Type'] = 'application/pdf'
