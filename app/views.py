@@ -14,19 +14,26 @@ from werkzeug.security import generate_password_hash
 views = Blueprint('views', __name__)
 
 
-# TODO hosting preparation (secret key, https redirect)
-
-
 # persiapan wkhtmltopdf (linux or windows)
-import os, sys, subprocess, platform
+# import sys, platform
+# if platform.system() == "Windows":
+#         pdfkit_config = pdfkit.configuration(wkhtmltopdf=os.environ.get('WKHTMLTOPDF_BINARY', 'C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe'))
+# else:
+#         os.environ['PATH'] += os.pathsep + os.path.dirname(sys.executable) 
+#         WKHTMLTOPDF_CMD = subprocess.Popen(['which', os.environ.get('WKHTMLTOPDF_BINARY', 'wkhtmltopdf')], 
+#             stdout=subprocess.PIPE).communicate()[0].strip()
+#         pdfkit_config = pdfkit.configuration(wkhtmltopdf=WKHTMLTOPDF_CMD)
+import os, subprocess
 
-if platform.system() == "Windows":
-        pdfkit_config = pdfkit.configuration(wkhtmltopdf=os.environ.get('WKHTMLTOPDF_BINARY', 'C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe'))
+if 'DYNO' in os.environ:
+    print ('loading wkhtmltopdf path on heroku')
+    WKHTMLTOPDF_CMD = subprocess.Popen(
+        ['which', os.environ.get('WKHTMLTOPDF_BINARY', 'wkhtmltopdf-pack')], # Note we default to 'wkhtmltopdf' as the binary name
+        stdout=subprocess.PIPE).communicate()[0].strip()
 else:
-        os.environ['PATH'] += os.pathsep + os.path.dirname(sys.executable) 
-        WKHTMLTOPDF_CMD = subprocess.Popen(['which', os.environ.get('WKHTMLTOPDF_BINARY', 'wkhtmltopdf')], 
-            stdout=subprocess.PIPE).communicate()[0].strip()
-        pdfkit_config = pdfkit.configuration(wkhtmltopdf=WKHTMLTOPDF_CMD)
+    print ('loading wkhtmltopdf path on localhost')
+    MYDIR = os.path.dirname(__file__)    
+    WKHTMLTOPDF_CMD = os.path.join(MYDIR + "/static/executables/bin/", "wkhtmltopdf.exe")
 
 
 # ---- staff acessible part of the application ----
@@ -309,7 +316,7 @@ def cetak_kartu(client_id, year):
     staff_list = Staff.query.all()
     month_in_year = year_object.months
     monthly_payment_date = []
-    
+
     # populasi list monthly_payment_data dengan data tanggal pembayaran
     for num in range(12):
         the_month = PaymentData.query.filter_by(payer=client.id, paid_year=year_object.id, paid_month=num+1).first()
