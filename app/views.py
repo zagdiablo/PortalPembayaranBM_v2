@@ -23,8 +23,8 @@ views = Blueprint('views', __name__)
 #         WKHTMLTOPDF_CMD = subprocess.Popen(['which', os.environ.get('WKHTMLTOPDF_BINARY', 'wkhtmltopdf')], 
 #             stdout=subprocess.PIPE).communicate()[0].strip()
 #         pdfkit_config = pdfkit.configuration(wkhtmltopdf=WKHTMLTOPDF_CMD)
-import os, subprocess
 
+import os, subprocess
 if 'DYNO' in os.environ:
     print ('loading wkhtmltopdf path on heroku')
     WKHTMLTOPDF_CMD = subprocess.Popen(
@@ -34,6 +34,17 @@ else:
     print ('loading wkhtmltopdf path on localhost')
     MYDIR = os.path.dirname(__file__)    
     WKHTMLTOPDF_CMD = os.path.join(MYDIR + "/static/executables/bin/", "wkhtmltopdf.exe")
+
+# import os, subprocess
+# if 'DYNO' in os.environ:
+#     print ('loading wkhtmltopdf path on heroku')
+#     WKHTMLTOPDF_CMD = subprocess.Popen(
+#         ['which', os.environ.get('WKHTMLTOPDF_BINARY', 'wkhtmltopdf-pack-ng')], # Note we default to 'wkhtmltopdf' as the binary name
+#         stdout=subprocess.PIPE).communicate()[0].strip()
+# else:
+#     print ('loading wkhtmltopdf path on localhost')
+#     MYDIR = os.path.dirname(__file__)    
+#     WKHTMLTOPDF_CMD = os.path.join(MYDIR + "/static/executables/bin/", "wkhtmltopdf.exe")
 
 
 # ---- staff acessible part of the application ----
