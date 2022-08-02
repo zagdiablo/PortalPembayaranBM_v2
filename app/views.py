@@ -15,6 +15,9 @@ WKHTMLTOPDF_CMD = '/app/bin/wkhtmltopdf'
 pdfkit_config = pdfkit.configuration(wkhtmltopdf=WKHTMLTOPDF_CMD)
 
 
+#TODO cetak kartu cetak kuitansi versi image
+
+
 # ---- staff acessible part of the application ----
 # menampilkan dashboard jikan login valid
 @views.route('/dashboard')
@@ -117,6 +120,11 @@ def init(from_login):
 @views.route('/clientlist')
 @login_required
 def client_list():
+
+    #TODO fitur search client (client list)
+    #TODO urut nama sesuai abjad (client list)
+    #TODO edit nama client
+
     client_list = Client.query.all()
     return render_template('clientlist.html', clients=client_list, current_staff=current_user)
 
