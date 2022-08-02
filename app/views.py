@@ -3,10 +3,10 @@ from flask_login import login_required, current_user
 
 import sqlalchemy
 import pdfkit
-import os
-import subprocess
-import platform
-import sys
+# import os
+# import subprocess
+# import platform
+# import sys
 
 from .models import db, Staff, Client, Year, Month, PaymentData
 from .module import format_name,  get_absolute_path
@@ -15,15 +15,8 @@ from werkzeug.security import generate_password_hash
 
 
 views = Blueprint('views', __name__)
-
-
-if platform.system() == "Windows":
-    pdfkit_config = pdfkit.configuration(wkhtmltopdf=os.environ.get('WKHTMLTOPDF_BINARY', 'C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe'))
-else:
-    os.environ['PATH'] += os.pathsep + os.path.dirname(sys.executable) 
-    WKHTMLTOPDF_CMD = subprocess.Popen(['which', os.environ.get('WKHTMLTOPDF_BINARY', 'wkhtmltopdf')], 
-        stdout=subprocess.PIPE).communicate()[0].strip()
-    pdfkit_config = pdfkit.configuration(wkhtmltopdf=WKHTMLTOPDF_CMD)
+WKHTMLTOPDF_CMD = '/app/bin/wkhtmltopdf'
+pdfkit_config = WKHTMLTOPDF_CMD
 
 
 # ---- staff acessible part of the application ----
