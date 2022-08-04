@@ -7,40 +7,53 @@
 
 
 {% block content %}
-    <div id="archive_list_container">
+    <div id="main_archive_container">
         <h3>Archive client</h3>
 
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                    {% if category == 'error' %}
-                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            {{ message }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    {% elif category == 'success' %}
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            {{ message }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <form action="/archivelist" method="post">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+            <div id="search_bar" class="input-group mb-3">
+                <input name="search_value" type="text" class="form-control" placeholder="Pencarian" aria-label="Pencarian" aria-describedby="button-addon2">
+                <input class="btn btn-outline-danger" type="submit" value="submit" id="button-addon2">
+            </div>
+        </form>
+
+        <div id="archive_list_container">
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        {% if category == 'error' %}
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% elif category == 'success' %}
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <div class="list-group">
+                {% for client in clients %}
+                    {% if client.is_archived %}
+                        <div id="client_bar" style="display: flex;">
+                            <a id="client_name_container" href="/datapembayaran/{{client.id}}" class="list-group-item list-group-item-action">
+                                <img style="width: 3em; height: auto; margin-right: 0.5em; border-radius: 100%;" src="{{ url_for('static', filename='img/pp.png') }}" alt="foto">
+                                {{client.first_name}} {{client.last_name}} ({{client.call_name}})
+                            </a>
+                            <a href="/unarchive/{{ client.id }}" id="trash_button" type="button" class="btn btn-danger btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Masukan ke archive">
+                                <i class="bi bi-arrow-left-square"></i>
+                            </a>
                         </div>
                     {% endif %}
                 {% endfor %}
-            {% endif %}
-        {% endwith %}
-
-        <div class="list-group">
-            {% for client in clients %}
-                {% if client.is_archived %}
-                    <div id="client_bar" style="display: flex;">
-                        <a href="/datapembayaran/{{client.id}}" class="list-group-item list-group-item-action">
-                            {{client.first_name}} {{client.last_name}} ({{client.call_name}})
-                        </a>
-                        <a href="/unarchive/{{ client.id }}" id="trash_button" type="button" class="btn btn-danger btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Keluarkan dari archive">
-                            <i class="bi bi-arrow-left-square"></i>
-                        </a>
-                    </div>
-                {% endif %}
-            {% endfor %}
+            </div>
         </div>
     </div>
 {% endblock %}

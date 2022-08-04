@@ -115,6 +115,9 @@ main {
 }
 
 main #top-greet {
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;

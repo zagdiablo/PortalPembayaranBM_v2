@@ -2,21 +2,44 @@
   margin: 0 0 0.5em 1em;
 }
 
-#client_list_container {
+#clientlist_main_container {
   width: 97%;
-  height: 95%;
+  height: 80%;
   margin: 1em 1em 1em 1em;
   padding: 1em 1em 1em 1em;
   -webkit-box-shadow: 0 0 1px 0 black;
           box-shadow: 0 0 1px 0 black;
+}
+
+#clientlist_main_container #clientlist_search_bar {
+  width: 20em;
+}
+
+#clientlist_main_container #client_list_container {
+  width: 100%;
+  height: 91%;
   overflow-y: scroll;
 }
 
-#client_list_container #client_bar {
+#clientlist_main_container #client_list_container #client_bar {
   margin-bottom: 0.5em;
 }
 
-#client_list_container #client_bar #trash_button {
+#clientlist_main_container #client_list_container #client_bar #client_name_container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding-left: 0.5em;
+}
+
+#clientlist_main_container #client_list_container #client_bar .client_edit_buttons {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -30,9 +53,30 @@
 }
 
 @media only screen and (max-width: 400px) {
-  #client_list_container {
-    width: 93%;
-    height: 95%;
+  #clientlist_main_container {
+    width: 92%;
+    height: 82%;
+  }
+  #clientlist_main_container #clientlist_search_bar {
+    width: 100%;
+  }
+  #clientlist_main_container #client_list_container {
+    width: 100%;
+    height: 92%;
+  }
+}
+
+@media only screen and (max-height: 668px) {
+  #clientlist_main_container {
+    width: 92%;
+    height: 77%;
+  }
+  #clientlist_main_container #clientlist_search_bar {
+    width: 100%;
+  }
+  #clientlist_main_container #client_list_container {
+    width: 100%;
+    height: 90%;
   }
 }
 /*# sourceMappingURL=clientlist.css.map */

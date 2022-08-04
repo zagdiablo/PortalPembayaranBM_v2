@@ -1,0 +1,38 @@
+#editclient_main_container{
+    width: 97%;
+    height: 86%;
+
+    margin: 1em 1em 1em 1em;
+    padding: 1em 1em 1em 1em;
+
+    box-shadow: 0 0 1px 0 black;
+
+    h3{
+        margin-bottom: 1em;
+    }
+
+    #editclient_container{
+        width: 100%;
+        height: 84%;
+        overflow-y: scroll;
+
+        #editclient_form{
+            width: 30%;
+        }
+    }
+}
+@media only screen and(max-width:700px){
+    #editclient_main_container{
+        width: 92%;
+        height: 86%;
+
+        #editclient_container{
+            width: 100%;
+            height: 84%;
+
+            #editclient_form{
+                width: 100%;
+            }
+        }
+    }
+}

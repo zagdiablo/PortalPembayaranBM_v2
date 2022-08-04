@@ -1,18 +1,18 @@
-from flask import Blueprint, flash, render_template, request, url_for, redirect, make_response
+from flask import Blueprint, flash, render_template, request, url_for, redirect
 from flask_login import login_required, current_user
 
 import sqlalchemy
-import pdfkit
 
-from .models import db, Staff, Client, Year, Month, PaymentData
+from .models import db, Staff, Client, Year, PaymentData
 from .module import format_name
 from datetime import date, datetime, timedelta
 from werkzeug.security import generate_password_hash
 
 
 views = Blueprint('views', __name__)
-WKHTMLTOPDF_CMD = '/app/bin/wkhtmltopdf'
-pdfkit_config = pdfkit.configuration(wkhtmltopdf=WKHTMLTOPDF_CMD)
+# konfigurasi wkhtmltopdf untuk deployment di heroku
+# WKHTMLTOPDF_CMD = '/app/bin/wkhtmltopdf'
+# pdfkit_config = pdfkit.configuration(wkhtmltopdf=WKHTMLTOPDF_CMD)
 
 
 #TODO cetak kartu cetak kuitansi versi image
@@ -83,88 +83,75 @@ def edit_profile():
     return redirect(url_for('views.edit_profile', client_name=client_name))
 
 
-# inisialisasi dan update database secara otomatis ke tahun sekarang sebelum mengakses daftar client
-@views.route('/init/<int:from_login>')
-@login_required
-def init(from_login):
-    year = Year.query.filter_by(year_name=str(date.today().year)).first()
-    month_preset = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
-                    'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember']
-    if not year:
-        new_year = Year(year_name=str(date.today().year))
-        db.session.add(new_year)
-        db.session.commit()
-        if not from_login:
-            return redirect(url_for('views.init'))
-        else:
-            return redirect(url_for('views.init', from_login=from_login))
-
-    month = Month.query.all()
-    if not month:
-        print('generated month')
-        for num in range(0, 12):
-            new_month = Month(
-                month_name = month_preset[num],
-                year_id = year.id
-            )
-            db.session.add(new_month)
-            db.session.commit()
-
-    if not from_login:
-        return redirect(url_for('views.client_list'))
-    else:
-        return redirect(url_for('views.dashboard'))
-
-
 # menampilkan daftar client
-@views.route('/clientlist')
+@views.route('/clientlist', methods=['GET', 'POST'])
 @login_required
 def client_list():
+    if request.method == 'GET':
+        client_list = Client.query.order_by(Client.first_name).all()
+        return render_template('clientlist.html', clients=client_list, current_staff=current_user)
 
-    #TODO fitur search client (client list)
-    #TODO urut nama sesuai abjad (client list)
-    #TODO edit nama client
-
-    client_list = Client.query.all()
-    return render_template('clientlist.html', clients=client_list, current_staff=current_user)
+    search_value = request.form.get('search_value')
+    if search_value:
+        return redirect(url_for('views.search_client', from_loc='client_list', value=search_value))
+    return redirect(url_for('views.client_list'))
 
 
-# endpoint fungsi untuk meng-archive client
-@views.route('/archive/<int:client_id>')
+@views.route('/editclient/<int:client_id>', methods=['GET', 'POST'])
 @login_required
-def archive_client(client_id):
-    client = Client.query.filter_by(id=client_id).first()
+def edit_client(client_id):
+    if request.method == 'GET':
+        client = Client.query.filter_by(id=client_id).first()
+        return render_template('/views/editclient.html', current_staff=current_user, client=client)
 
-    to_archive = Client.query.filter_by(id=client_id).update({
-        Client.is_archived : True
+    new_first_name = request.form.get('first_name')
+    new_last_name = request.form.get('last_name')
+    new_call_name = request.form.get('call_name')
+
+    new_data = Client.query.filter_by(id=client_id).update({
+        Client.first_name: new_first_name if new_first_name else Client.first_name,
+        Client.last_name: new_last_name if new_last_name else Client.last_name,
+        Client.call_name: new_call_name if new_call_name else Client.call_name
     })
     db.session.commit()
 
-    flash(f'Berhasil memasukan {client.call_name} archive', category='success')
-    return redirect(url_for('views.client_list', current_staff=current_user))
+    return redirect(url_for('views.client_list'))
 
 
 # menampilkan daftar client yang telah di archive
-@views.route('/archivelist')
+@views.route('/archivelist', methods=['GET', 'POST'])
 @login_required
 def archive_list():
-    client_list = Client.query.all()
-    return render_template('archivelist.html', clients=client_list, current_staff=current_user)
+    if request.method == 'GET':
+        client_list = Client.query.order_by(Client.first_name).all()
+        return render_template('archivelist.html', clients=client_list, current_staff=current_user)
+
+    search_value = request.form.get('search_value')
+    if search_value:
+        return redirect(url_for('views.search_client', from_loc='archive_list', value=search_value))
+    return redirect(url_for('views.archive_list'))
 
 
-# endpoint fungsi untuk mengembalikan client dari archive ke daftar client
-@views.route('/unarchive/<int:client_id>')
+# endpoint pencarian client list dan archive list
+@views.route('/search/<string:from_loc>/<string:value>', methods=['GET', 'POST'])
 @login_required
-def unarchive_client(client_id):
-    client = Client.query.filter_by(id=client_id).first()
+def search_client(from_loc, value):
+    raw_client_list = Client.query.order_by(Client.first_name).all()
+    client_list = []
+    for client in raw_client_list:
+        name_str = f'{client.first_name} {client.last_name} ({client.call_name})'
+        if value in name_str:
+            client_list.append(client)
 
-    to_archive = Client.query.filter_by(id=client_id).update({
-        Client.is_archived : False
-    })
-    db.session.commit()
+    if from_loc == 'client_list':
+        return render_template('/operation_template/search_client_list.html', clients=client_list, current_staff=current_user, 
+            search_value=value, is_search=True)
 
-    flash(f'Berhasil mengeluarkan {client.call_name} dari archive', category='success')
-    return redirect(url_for('views.archive_list', current_staff=current_user))
+    if from_loc == 'archive_list':
+        return render_template('/operation_template/search_archive_list.html', clients=client_list, current_staff=current_user, 
+            search_value=value, is_search=True)
+
+    return redirect(url_for('views.dashboard'))
 
 
 # menambah client baru dan mempopulasi database dengan data inisial ('belum lunas')
@@ -288,75 +275,6 @@ def display_data_pembayaran(client_id, year):
         db.session.commit()
 
     return redirect(url_for('views.display_data_pembayaran', client_id=client_id, year=year))
-
-
-# cetak kartu pdf
-@views.route('cetakkartu/pdf/<int:client_id>/<string:year>')
-@login_required
-def cetak_kartu(client_id, year):
-    #     # query data inisial untuk pemuatan halaman
-    client = Client.query.filter_by(id=client_id).first()
-    client = Client.query.filter_by(id=client_id).first()
-    year_object = Year.query.filter_by(year_name=year).first()
-    payment_data = PaymentData.query.filter_by(payer=client.id, paid_year=year_object.id).all()
-    year_list = Year.query.all()
-    staff_list = Staff.query.all()
-    month_in_year = year_object.months
-    monthly_payment_date = []
-
-    # populasi list monthly_payment_data dengan data tanggal pembayaran
-    for num in range(12):
-        the_month = PaymentData.query.filter_by(payer=client.id, paid_year=year_object.id, paid_month=num+1).first()
-        monthly_payment_date.append(the_month.date_paid)
-
-    rendered = render_template('cetakkartu.html', client=client, year=year, year_list=year_list, months=month_in_year, 
-            month_payment_data=zip(payment_data, month_in_year, monthly_payment_date), staff_list=staff_list)
-
-    options = {'load-error-handling':'ignore'}
-    pdf = pdfkit.from_string(rendered, False, configuration=pdfkit_config, css='app/static/css/cetakkartu.css', options=options)
-
-    response = make_response(pdf)   
-    response.headers['Content-Type'] = 'application/pdf'
-    response.headers['Content-Disposition'] = f'inline; filename={client.call_name}_{year}.pdf'
-
-    return response
-
-
-# cetak kuitansi pdf
-@views.route('cetakkuitansi/pdf/<int:client_id>/<string:year>/<int:kuitansi_id>')
-@login_required
-def cetak_kuitansi(client_id, year, kuitansi_id):
-    # query data inisial untuk pemuatan halaman
-    client = Client.query.filter_by(id=client_id).first()
-    kuitansi = PaymentData.query.filter_by(id=kuitansi_id).first()
-    client = Client.query.filter_by(id=client_id).first()
-    year_object = Year.query.filter_by(year_name=year).first()
-    payment_data = PaymentData.query.filter_by(payer=client.id, paid_year=year_object.id).all()
-    year_list = Year.query.all()
-    staff_list = Staff.query.all()
-    month_in_year = year_object.months
-    monthly_payment_date = []
-    kuitansi = PaymentData.query.filter_by(id=kuitansi_id).first()
-
-    # populasi list monthly_payment_data dengan data tanggal pembayaran
-    for num in range(12):
-        the_month = PaymentData.query.filter_by(payer=client.id, paid_year=year_object.id, paid_month=num+1).first()
-        monthly_payment_date.append(the_month.date_paid)
-
-    if not kuitansi.isPaid:
-        flash('Pembayaran belum lunas.', category='error')
-        return redirect(url_for('views.display_data_pembayaran', client_id=client_id, year=year))
-
-    rendered = render_template('cetakkuitansi.html', client=client, year=year, year_list=year_list, kuitansi=kuitansi, months=month_in_year, 
-            month_payment_data=zip(payment_data, month_in_year, monthly_payment_date), staff_list=staff_list)
-    options = {'load-error-handling':'ignore'}
-    pdf = pdfkit.from_string(rendered, False, configuration=pdfkit_config, css='app/static/css/cetakkuitansi.css', options=options)
-
-    response = make_response(pdf)
-    response.headers['Content-Type'] = 'application/pdf'
-    response.headers['Content-Disposition'] = f'inline; filename=kuitansi_{client.call_name}_{year}_{kuitansi_id}.pdf'
-
-    return response
 
 
 # ---- admin accessible part of the aplication ----
