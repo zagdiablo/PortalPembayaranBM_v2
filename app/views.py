@@ -10,9 +10,6 @@ from werkzeug.security import generate_password_hash
 
 
 views = Blueprint('views', __name__)
-# konfigurasi wkhtmltopdf untuk deployment di heroku
-# WKHTMLTOPDF_CMD = '/app/bin/wkhtmltopdf'
-# pdfkit_config = pdfkit.configuration(wkhtmltopdf=WKHTMLTOPDF_CMD)
 
 
 #TODO cetak kartu cetak kuitansi versi image

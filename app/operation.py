@@ -1,13 +1,19 @@
 from flask import redirect, Blueprint, url_for, flash, render_template, make_response
 from flask_login import login_required, current_user
-from flask_weasyprint import HTML, render_pdf
 from datetime import date
+
+import pdfkit
 
 from . import db
 from .models import Year, Month, Client, PaymentData, Staff
 
 
 operation = Blueprint('operation', __name__)
+
+
+# konfigurasi wkhtmltopdf untuk deployment di heroku
+WKHTMLTOPDF_CMD = 'app/bin/wkhtmltopdf'
+pdfkit_config = pdfkit.configuration(wkhtmltopdf=WKHTMLTOPDF_CMD)
 
 
 # inisialisasi dan update database secara otomatis ke tahun sekarang sebelum mengakses daftar client
@@ -95,7 +101,7 @@ def cetak_kartu(client_id, year):
 
     rendered = render_template('cetakkartu.html', client=client, year=year, year_list=year_list, months=month_in_year, 
             month_payment_data=zip(payment_data, month_in_year, monthly_payment_date), staff_list=staff_list)
-    pdf = render_pdf(HTML(rendered))
+    pdf = pdfkit.from_string(rendered, False, configuration=pdfkit_config, css='app/static/css/cetakkartu.css')
 
     response = make_response(pdf)   
     response.headers['Content-Type'] = 'application/pdf'
@@ -131,7 +137,7 @@ def cetak_kuitansi(client_id, year, kuitansi_id):
 
     rendered = render_template('cetakkuitansi.html', client=client, year=year, year_list=year_list, kuitansi=kuitansi, months=month_in_year, 
             month_payment_data=zip(payment_data, month_in_year, monthly_payment_date), staff_list=staff_list)
-    pdf = render_pdf(HTML(rendered))
+    pdf = pdfkit.from_string(rendered, False, configuration=pdfkit_config, css='app/static/css/cetakkuitansi.css')
 
     response = make_response(pdf)
     response.headers['Content-Type'] = 'application/pdf'
