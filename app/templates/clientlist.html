@@ -16,7 +16,16 @@
         </a>
     </div>
 
-    <div id="client_list_container">
+    <div id="clientlist_main_container">
+        <form action="/clientlist" method="post">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+            <div id="clientlist_search_bar" class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Pencarian" name="search_value" aria-label="Pencarian" aria-describedby="button-addon2">
+                <input class="btn btn-outline-danger" type="submit" id="button-addon2" value="Cari">
+            </div>
+        </form>
+
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}
@@ -35,19 +44,25 @@
             {% endif %}
         {% endwith %}
 
-        <div class="list-group">
-            {% for client in clients %}
-                {% if not client.is_archived %}
-                    <div id="client_bar" style="display: flex;">
-                        <a href="/datapembayaran/{{client.id}}" class="list-group-item list-group-item-action">
-                            {{client.first_name}} {{client.last_name}} ({{client.call_name}})
-                        </a>
-                        <a href="/archive/{{ client.id }}" id="trash_button" type="button" class="btn btn-danger btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Masukan ke archive">
-                            <i class="bi bi-trash"></i>
-                        </a>
-                    </div>
-                {% endif %}
-            {% endfor %}
+        <div id="client_list_container">
+            <div class="list-group">
+                {% for client in clients %}
+                    {% if not client.is_archived %}
+                        <div id="client_bar" style="display: flex;">
+                            <a id="client_name_container" href="/datapembayaran/{{client.id}}" class="list-group-item list-group-item-action">
+                                <img style="width: 3em; height: auto; margin-right: 0.5em; border-radius: 100%;" src="{{ url_for('static', filename='img/pp.png') }}" alt="foto">
+                                {{client.first_name}} {{client.last_name}} ({{client.call_name}})
+                            </a>
+                            <a href="/editclient/{{ client.id }}" id="edit_button" type="button" class="client_edit_buttons btn btn-danger btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
+                                <i class="bi bi-pencil-square"></i>
+                            </a>
+                            <a href="/archive/{{ client.id }}" id="trash_button" type="button" class="client_edit_buttons btn btn-danger btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Archive">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
         </div>
     </div>
 {% endblock %}

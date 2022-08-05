@@ -14,7 +14,7 @@ DB_NAME = 'app.db'
 
 def start_app():
     app = Flask(__name__)
-    app.config['DEBUG'] = False
+    app.config['DEBUG'] = True
     app.config['SECRET_KEY'] = SECRET_KEY
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
 
@@ -25,6 +25,7 @@ def start_app():
 
     from .auth import auth
     from .views import views
+    from .operation import operation
     from .models import Staff, Client, Year, Month, PaymentData
 
     create_database(app)
@@ -39,6 +40,8 @@ def start_app():
 
     app.register_blueprint(auth, url_prefix='/')
     app.register_blueprint(views, url_prefix='/')
+    app.register_blueprint(operation, url_prefix='/')
+    
 
     if 'DYNO' in os.environ: # only trigger SSLify if the app is running on Heroku
         sslify = SSLify(app)
