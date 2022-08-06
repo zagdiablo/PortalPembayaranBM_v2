@@ -15,7 +15,7 @@ operation = Blueprint('operation', __name__)
 # konfigurasi wkhtmltopdf untuk deployment di heroku
 WKHTMLTOPDF_CMD = ''
 if platform.system() == 'Windows':
-    WKHTMLTOPDF_CMD = 'app/bin/windows/wkhtmltopdf'
+    WKHTMLTOPDF_CMD = 'app/bin/windows/wkhtmltopdf.exe'
 else:
     WKHTMLTOPDF_CMD = 'app/bin/linux/wkhtmltopdf'
 pdfkit_config = pdfkit.configuration(wkhtmltopdf=WKHTMLTOPDF_CMD)
