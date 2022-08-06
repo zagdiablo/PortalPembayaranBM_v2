@@ -3,6 +3,7 @@ from flask_login import login_required, current_user
 from datetime import date
 
 import pdfkit
+import platform
 
 from . import db
 from .models import Year, Month, Client, PaymentData, Staff
@@ -12,7 +13,11 @@ operation = Blueprint('operation', __name__)
 
 
 # konfigurasi wkhtmltopdf untuk deployment di heroku
-WKHTMLTOPDF_CMD = 'app/bin/wkhtmltopdf'
+WKHTMLTOPDF_CMD = ''
+if platform.system() == 'Windows':
+    WKHTMLTOPDF_CMD = 'app/bin/windows/wkhtmltopdf'
+else:
+    WKHTMLTOPDF_CMD = 'app/bin/linux/wkhtmltopdf'
 pdfkit_config = pdfkit.configuration(wkhtmltopdf=WKHTMLTOPDF_CMD)
 
 

@@ -1,0 +1,108 @@
+// ---------- all globaly defined styles ----------
+@mixin articleContainer {
+    margin: 0.7em;
+    padding: 0.5em;
+    box-shadow: 0px 0px 3px 0px #ababab;
+    width:  97.8%;
+    height: 87.5%;
+    animation: slideRightFadeIn 0.1s linear;
+}
+
+@mixin buttonDefaultRed{
+    padding: 1em 2em 1em 2em;
+    margin: 1em 0em 1em 0em;
+    background-color: #FF3939;
+    border-radius: 5px;
+    border: none;
+    box-shadow: 0px 0px 2px 0px black;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+
+    &:hover{
+        background-color: #FF6666;
+    }
+}
+
+@mixin defaultTableStyle {
+    width: 100%;
+    min-width: 480px;
+    border-spacing: 0;
+    border-collapse: collapse;
+    table-layout: fixed;
+    border: 1px solid rgb(0, 0, 0);
+}
+
+@mixin defaultThStyle {
+    background-color: #FF6666;
+    border: 1px solid rgb(0, 0, 0);
+    padding: 0.5em 0em 0.5em 0em;
+}
+
+@mixin defaultTdStyle {
+    text-align: left;
+    border: 1px solid rgb(0, 0, 0);
+    padding: 0.3em 0em 0.3em 0.3em;
+}
+
+#page2-cetak-kartu-preview{
+    display: flex;
+    flex-direction: column;
+
+    #cetak-kartu-scroll{
+        display: flex;  
+        padding: 1em;
+        
+        width: 95%;
+        height: 67em;
+
+        #cetak-kartu-table-container{
+            width: 100%;
+            height: max-content;
+            padding: 0em 1em 1em 1em;
+            border: 1px solid black;
+    
+            #cetak-kartu-nama-client{ // p tag
+                font-weight: bold;
+                margin-bottom: 0.5em;
+            }
+    
+            #cetak-kartu-table-top{
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+    
+                #cetak-kartu-img-container{
+                    width: 500px;
+                    height: auto;
+                    padding: 0.5em 0em 0em 0em;
+                    margin-top: 0.5em;
+    
+                    img{
+                        width: inherit;
+                        height: inherit;
+                    }
+                }
+            }
+    
+            #cetak-kartu-preview-table{
+                width: 100%;
+
+                @include defaultTableStyle();
+        
+                #no{
+                    width: 40px;
+                }
+                th{
+                    background-color: none;
+                    border: 1px solid rgb(0, 0, 0);
+                    padding: 0.5em 0em 0.5em 0em;
+                }
+                td{
+                    @include defaultTdStyle();
+                }
+            }
+        }
+    }
+}
