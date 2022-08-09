@@ -7,6 +7,7 @@ import platform
 
 from . import db
 from .models import Year, Month, Client, PaymentData, Staff
+from .module import format_pdf_title
 
 
 operation = Blueprint('operation', __name__)
@@ -111,9 +112,10 @@ def cetak_kartu(client_id, year):
     # NOTE silahkan ubah sesuai kebutuhan server deployment
     pdf = pdfkit.from_string(rendered, False, configuration=pdfkit_config, css='app/static/css/cetakkartu.css')
 
-    response = make_response(pdf)   
+    pdf_title = format_pdf_title(f'{client.first_name}_{client.last_name}_({client.call_name})_{year}')
+    response = make_response(pdf)
     response.headers['Content-Type'] = 'application/pdf'
-    response.headers['Content-Disposition'] = f'inline; filename={client.first_name}_{client.last_name}_({client.call_name})_{year}.pdf'
+    response.headers['Content-Disposition'] = f'inline; filename={pdf_title}.pdf'
 
     return response
 
@@ -149,8 +151,10 @@ def cetak_kuitansi(client_id, year, kuitansi_id):
     # NOTE silahkan ubah sesuai kebutuhan server deployment
     pdf = pdfkit.from_string(rendered, False, configuration=pdfkit_config, css='app/static/css/cetakkuitansi.css')
 
+    pdf_title = format_pdf_title(f'{client.first_name}_{client.last_name}_({client.call_name})_{year}')
+    print(pdf_title)
     response = make_response(pdf)
     response.headers['Content-Type'] = 'application/pdf'
-    response.headers['Content-Disposition'] = f'inline; filename=kuitansi_{client.first_name}_{client.last_name}_({client.call_name})_{year}_{kuitansi.paid_month}.pdf'
+    response.headers['Content-Disposition'] = f'inline; filename={pdf_title}.pdf'
 
     return response
