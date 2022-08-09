@@ -18,7 +18,7 @@ WKHTMLTOPDF_CMD = ''
 if platform.system() == 'Windows':
     WKHTMLTOPDF_CMD = 'app/bin/windows/wkhtmltopdf.exe'
 else:
-    WKHTMLTOPDF_CMD = 'app/bin/linux/wkhtmltopdf'
+    WKHTMLTOPDF_CMD = '/usr/bin/wkhtmltopdf'
 pdfkit_config = pdfkit.configuration(wkhtmltopdf=WKHTMLTOPDF_CMD)
 
 
