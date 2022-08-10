@@ -5,6 +5,15 @@ from . import db
 from .models import Staff
 
 
+def format_pdf_title(title):
+    result = ''
+    for char in title:
+        if char == ',':
+            continue
+        result += char
+    return result
+
+
 def format_name(name_part):
     splited_name = [letter for letter in name_part]
     splited_name[0] = splited_name[0].upper()

@@ -4,3 +4,5 @@
 added_feature.txt
 venv
 env
+/app/app.db
+experimental.py

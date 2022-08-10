@@ -7,12 +7,14 @@ import platform
 
 from . import db
 from .models import Year, Month, Client, PaymentData, Staff
+from .module import format_pdf_title
 
 
 operation = Blueprint('operation', __name__)
 
 
 # konfigurasi wkhtmltopdf untuk deployment di heroku
+# NOTE silahkan ubah sesuai kebutuhan server deployment
 WKHTMLTOPDF_CMD = ''
 if platform.system() == 'Windows':
     WKHTMLTOPDF_CMD = 'app/bin/windows/wkhtmltopdf.exe'
@@ -106,11 +108,14 @@ def cetak_kartu(client_id, year):
 
     rendered = render_template('cetakkartu.html', client=client, year=year, year_list=year_list, months=month_in_year,
             month_payment_data=zip(payment_data, month_in_year, monthly_payment_date), staff_list=staff_list)
+
+    # NOTE silahkan ubah sesuai kebutuhan server deployment
     pdf = pdfkit.from_string(rendered, False, configuration=pdfkit_config, css='/home/sistempembayaranbm/PortalPembayaranBM_v2/app/static/css/cetakkartu.css')
 
+    pdf_title = format_pdf_title(f'{client.first_name}_{client.last_name}_({client.call_name})_{year}')
     response = make_response(pdf)
     response.headers['Content-Type'] = 'application/pdf'
-    response.headers['Content-Disposition'] = f'inline; filename={client.first_name}_{client.last_name}_({client.call_name})_{year}.pdf'
+    response.headers['Content-Disposition'] = f'inline; filename={pdf_title}.pdf'
 
     return response
 
@@ -142,10 +147,14 @@ def cetak_kuitansi(client_id, year, kuitansi_id):
 
     rendered = render_template('cetakkuitansi.html', client=client, year=year, year_list=year_list, kuitansi=kuitansi, months=month_in_year,
             month_payment_data=zip(payment_data, month_in_year, monthly_payment_date), staff_list=staff_list)
+
+    # NOTE silahkan ubah sesuai kebutuhan server deployment
     pdf = pdfkit.from_string(rendered, False, configuration=pdfkit_config, css='/home/sistempembayaranbm/PortalPembayaranBM_v2/app/static/css/cetakkuitansi.css')
 
+    pdf_title = format_pdf_title(f'{client.first_name}_{client.last_name}_({client.call_name})_{year}')
+    print(pdf_title)
     response = make_response(pdf)
     response.headers['Content-Type'] = 'application/pdf'
-    response.headers['Content-Disposition'] = f'inline; filename=kuitansi_{client.first_name}_{client.last_name}_({client.call_name})_{year}_{kuitansi.paid_month}.pdf'
+    response.headers['Content-Disposition'] = f'inline; filename={pdf_title}.pdf'
 
     return response

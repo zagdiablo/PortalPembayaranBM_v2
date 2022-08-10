@@ -136,7 +136,7 @@ def search_client(from_loc, value):
     raw_client_list = Client.query.order_by(Client.first_name).all()
     client_list = []
     for client in raw_client_list:
-        name_str = f'{client.first_name} {client.last_name} ({client.call_name})'
+        name_str = f'{str(client.first_name).lower()} {str(client.last_name).lower()} ({str(client.call_name).lower()})'
         if value in name_str:
             client_list.append(client)
 
