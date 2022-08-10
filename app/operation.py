@@ -17,7 +17,7 @@ WKHTMLTOPDF_CMD = ''
 if platform.system() == 'Windows':
     WKHTMLTOPDF_CMD = 'app/bin/windows/wkhtmltopdf.exe'
 else:
-    WKHTMLTOPDF_CMD = 'app/bin/linux/wkhtmltopdf'
+    WKHTMLTOPDF_CMD = '/usr/bin/wkhtmltopdf'
 pdfkit_config = pdfkit.configuration(wkhtmltopdf=WKHTMLTOPDF_CMD)
 
 
@@ -104,11 +104,11 @@ def cetak_kartu(client_id, year):
         the_month = PaymentData.query.filter_by(payer=client.id, paid_year=year_object.id, paid_month=num+1).first()
         monthly_payment_date.append(the_month.date_paid)
 
-    rendered = render_template('cetakkartu.html', client=client, year=year, year_list=year_list, months=month_in_year, 
+    rendered = render_template('cetakkartu.html', client=client, year=year, year_list=year_list, months=month_in_year,
             month_payment_data=zip(payment_data, month_in_year, monthly_payment_date), staff_list=staff_list)
-    pdf = pdfkit.from_string(rendered, False, configuration=pdfkit_config, css='app/static/css/cetakkartu.css')
+    pdf = pdfkit.from_string(rendered, False, configuration=pdfkit_config, css='/home/sistempembayaranbm/PortalPembayaranBM_v2/app/static/css/cetakkartu.css')
 
-    response = make_response(pdf)   
+    response = make_response(pdf)
     response.headers['Content-Type'] = 'application/pdf'
     response.headers['Content-Disposition'] = f'inline; filename={client.first_name}_{client.last_name}_({client.call_name})_{year}.pdf'
 
@@ -140,9 +140,9 @@ def cetak_kuitansi(client_id, year, kuitansi_id):
         flash('Pembayaran belum lunas.', category='error')
         return redirect(url_for('views.display_data_pembayaran', client_id=client_id, year=year))
 
-    rendered = render_template('cetakkuitansi.html', client=client, year=year, year_list=year_list, kuitansi=kuitansi, months=month_in_year, 
+    rendered = render_template('cetakkuitansi.html', client=client, year=year, year_list=year_list, kuitansi=kuitansi, months=month_in_year,
             month_payment_data=zip(payment_data, month_in_year, monthly_payment_date), staff_list=staff_list)
-    pdf = pdfkit.from_string(rendered, False, configuration=pdfkit_config, css='app/static/css/cetakkuitansi.css')
+    pdf = pdfkit.from_string(rendered, False, configuration=pdfkit_config, css='/home/sistempembayaranbm/PortalPembayaranBM_v2/app/static/css/cetakkuitansi.css')
 
     response = make_response(pdf)
     response.headers['Content-Type'] = 'application/pdf'
