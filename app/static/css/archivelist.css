@@ -1,6 +1,8 @@
 #main_archive_container {
   width: 97%;
-  height: 86%;
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
   margin: 1em 1em 1em 1em;
   padding: 1em 1em 1em 1em;
   -webkit-box-shadow: 0 0 1px 0 black;
@@ -18,8 +20,9 @@
 
 #main_archive_container #archive_list_container {
   width: 100%;
-  height: 85%;
-  overflow-y: scroll;
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
 }
 
 #main_archive_container #archive_list_container #client_bar {
@@ -56,42 +59,54 @@
 @media only screen and (max-width: 900) {
   #main_archive_container {
     width: 93%;
-    height: 86%;
+    height: -webkit-fit-content;
+    height: -moz-fit-content;
+    height: fit-content;
   }
   #main_archive_container #search_bar {
     width: 20em;
   }
   #main_archive_container #archive_list_container {
     width: 100%;
-    height: 85%;
+    height: -webkit-fit-content;
+    height: -moz-fit-content;
+    height: fit-content;
   }
 }
 
 @media only screen and (max-width: 400px) {
   #main_archive_container {
     width: 92%;
-    height: 87%;
+    height: -webkit-fit-content;
+    height: -moz-fit-content;
+    height: fit-content;
   }
   #main_archive_container #search_bar {
     width: 100%;
   }
   #main_archive_container #archive_list_container {
     width: 100%;
-    height: 86%;
+    height: -webkit-fit-content;
+    height: -moz-fit-content;
+    height: fit-content;
   }
 }
 
 @media only screen and (max-height: 668px) {
   #main_archive_container {
     width: 92%;
-    height: 83%;
+    height: -webkit-fit-content;
+    height: -moz-fit-content;
+    height: fit-content;
   }
   #main_archive_container #search_bar {
     width: 100%;
   }
   #main_archive_container #archive_list_container {
     width: 100%;
-    height: 84%;
+    height: -webkit-fit-content;
+    height: -moz-fit-content;
+    height: fit-content;
   }
 }
 /*# sourceMappingURL=archivelist.css.map */

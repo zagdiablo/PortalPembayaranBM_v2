@@ -4,7 +4,9 @@
 
 #clientlist_main_container {
   width: 97%;
-  height: 80%;
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
   margin: 1em 1em 1em 1em;
   padding: 1em 1em 1em 1em;
   -webkit-box-shadow: 0 0 1px 0 black;
@@ -17,8 +19,9 @@
 
 #clientlist_main_container #client_list_container {
   width: 100%;
-  height: 91%;
-  overflow-y: scroll;
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
 }
 
 #clientlist_main_container #client_list_container #client_bar {
@@ -55,7 +58,9 @@
 @media only screen and (max-width: 400px) {
   #clientlist_main_container {
     width: 92%;
-    height: 82%;
+    height: -webkit-fit-content;
+    height: -moz-fit-content;
+    height: fit-content;
   }
   #clientlist_main_container #clientlist_search_bar {
     width: 100%;
@@ -69,7 +74,9 @@
 @media only screen and (max-height: 668px) {
   #clientlist_main_container {
     width: 92%;
-    height: 77%;
+    height: -webkit-fit-content;
+    height: -moz-fit-content;
+    height: fit-content;
   }
   #clientlist_main_container #clientlist_search_bar {
     width: 100%;

@@ -1,6 +1,6 @@
 #main_archive_container{
     width: 97%;
-    height: 86%;
+    height: fit-content;
 
     margin: 1em 1em 1em 1em;
     padding: 1em 1em 1em 1em;
@@ -18,8 +18,7 @@
 
     #archive_list_container{
         width: 100%;
-        height: 85%;
-        overflow-y: scroll;
+        height: fit-content;
     
         #client_bar{
             margin-bottom: 0.5em;
@@ -43,7 +42,7 @@
 @media only screen and(max-width: 900){
     #main_archive_container{
         width: 93%;
-        height: 86%;
+        height: fit-content;
 
         #search_bar{
             width: 20em;
@@ -51,14 +50,14 @@
 
         #archive_list_container{
             width: 100%;
-            height: 85%;
+            height: fit-content;
         }
     }
 }
 @media only screen and(max-width: 400px){
     #main_archive_container{
         width: 92%;
-        height: 87%;
+        height: fit-content;
 
         #search_bar{
             width: 100%;
@@ -66,14 +65,14 @@
 
         #archive_list_container{
             width: 100%;
-            height: 86%;
+            height: fit-content;
         }
     }
 }
 @media only screen and(max-height: 668px){
     #main_archive_container{
         width: 92%;
-        height: 83%;
+        height: fit-content;
 
         #search_bar{
             width: 100%;
@@ -81,7 +80,7 @@
 
         #archive_list_container{
             width: 100%;
-            height: 84%;
+            height: fit-content;
         }
     }
 }

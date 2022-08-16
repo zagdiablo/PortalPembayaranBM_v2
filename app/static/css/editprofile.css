@@ -11,12 +11,11 @@
       -ms-flex-direction: column;
           flex-direction: column;
   width: 97%;
-  height: 86%;
+  height: 100%;
   margin: 1em 1em 1em 1em;
   padding: 1em 1em 1em 1em;
   -webkit-box-shadow: 0 0 1px 0 black;
           box-shadow: 0 0 1px 0 black;
-  overflow-y: scroll;
 }
 
 #edit_profile_container h3 {
