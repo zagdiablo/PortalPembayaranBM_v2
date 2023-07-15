@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_wtf import CSRFProtect
 from flask_sslify import SSLify
+from flask_migrate import Migrate
 from .secret import SECRET_KEY
 from genericpath import isfile
 
@@ -13,7 +14,7 @@ db = SQLAlchemy()
 DB_NAME = "app.db"
 
 
-def start_app():
+def create_app():
     app = Flask(__name__)
     app.config["DEBUG"] = True  # TODO change this before production
     app.config["SECRET_KEY"] = SECRET_KEY
@@ -22,6 +23,7 @@ def start_app():
     csrf = CSRFProtect(app)
 
     db.init_app(app)
+    migrate = Migrate(app, db)
 
     from .auth import auth
     from .views import views

@@ -6,3 +6,4 @@ venv
 env
 /app/app.db
 experimental.py
+migrations

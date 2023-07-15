@@ -1,9 +1,18 @@
-from flask import redirect, Blueprint, url_for, flash, render_template, make_response
+from flask import (
+    redirect,
+    Blueprint,
+    url_for,
+    flash,
+    render_template,
+    make_response,
+    url_for,
+)
 from flask_login import login_required, current_user
 from datetime import date
 
 import pdfkit
 import platform
+import os
 
 from . import db
 from .models import Year, Month, Client, PaymentData, Staff
@@ -11,6 +20,13 @@ from .module import format_pdf_title
 
 
 operation = Blueprint("operation", __name__)
+
+
+# Variabel lokasi untuk css cetakkartu
+if os.name == "posix":
+    css = "/home/sistempembayaranbm/PortalPembayaranBM_v2/app/static/css/cetakkartu.css"
+elif os.name == "nt":
+    css = "C:/Users/Adit/Documents/github_repo/PortalPembayaranBM_v2/app/static/css/cetakkartu.css"
 
 
 # konfigurasi wkhtmltopdf untuk deployment di heroku
@@ -126,6 +142,7 @@ def cetak_kartu(client_id, year):
     #     # query data inisial untuk pemuatan halaman
     client = Client.query.filter_by(id=client_id).first()
     client = Client.query.filter_by(id=client_id).first()
+    deadline_pembayaran = client.deadline_pembayaran
     year_object = Year.query.filter_by(year_name=year).first()
     payment_data = PaymentData.query.filter_by(
         payer=client.id, paid_year=year_object.id
@@ -150,15 +167,25 @@ def cetak_kartu(client_id, year):
         months=month_in_year,
         month_payment_data=zip(payment_data, month_in_year, monthly_payment_date),
         staff_list=staff_list,
+        deadline_pembayaran=deadline_pembayaran,
     )
 
     # NOTE silahkan ubah sesuai kebutuhan server deployment
-    pdf = pdfkit.from_string(
-        rendered,
-        False,
-        configuration=pdfkit_config,
-        css="/home/sistempembayaranbm/PortalPembayaranBM_v2/app/static/css/cetakkartu.css",
-    )
+    if os.name == "nt":
+        pdf = pdfkit.from_string(
+            rendered,
+            False,
+            configuration=pdfkit_config,
+            options={"enable-local-file-access": ""},
+            css=css,
+        )
+    elif os.name == "posix":
+        pdf = pdfkit.from_string(
+            rendered,
+            False,
+            configuration=pdfkit_config,
+            css=css,
+        )
 
     pdf_title = format_pdf_title(
         f"{client.first_name}_{client.last_name}_({client.call_name})_{year}"
@@ -213,12 +240,21 @@ def cetak_kuitansi(client_id, year, kuitansi_id):
     )
 
     # NOTE silahkan ubah sesuai kebutuhan server deployment
-    pdf = pdfkit.from_string(
-        rendered,
-        False,
-        configuration=pdfkit_config,
-        css="/home/sistempembayaranbm/PortalPembayaranBM_v2/app/static/css/cetakkuitansi.css",
-    )
+    if os.name == "nt":
+        pdf = pdfkit.from_string(
+            rendered,
+            False,
+            configuration=pdfkit_config,
+            options={"enable-local-file-access": ""},
+            css=css,
+        )
+    elif os.name == "posix":
+        pdf = pdfkit.from_string(
+            rendered,
+            False,
+            configuration=pdfkit_config,
+            css=css,
+        )
 
     pdf_title = format_pdf_title(
         f"{client.first_name}_{client.last_name}_({client.call_name})_{year}"

@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cetak kartu</title>
 </head>
+
 <body>
     <article id="page2-cetak-kartu-preview">
         <div id="cetak-kartu-scroll">
@@ -35,39 +37,41 @@
                         <td>{{ month.month_name }}</td>
                         <td>
                             {% if paid_date %}
-                                {{ paid_date }}
+                            {{ paid_date }}
                             {% else %}
-                                <p></p>
+                            <p></p>
                             {% endif %}
                         </td>
                         <td>
                             {% if payment_data.states == 'belum lunas' %}
-                                    <p style="color: red; font-weight: bold;">Belum lunas</p>
-                                {% elif payment_data.states == 'lunas' %}
-                                    <p style="color: green; font-weight: bold;">Lunas</p>
-                                {% elif payment_data.states == 'tidak les' %}
-                                    <p style="color: blue; font-weight: bold;">Tidak les</p>
-                                {% elif payment_data.states == 'belum belajar' %}
-                                    <p style="color: purple; font-weight: bold;">Belum belajar</p>
+                            <p style="color: red; font-weight: bold;">Belum lunas</p>
+                            {% elif payment_data.states == 'lunas' %}
+                            <p style="color: green; font-weight: bold;">Lunas</p>
+                            {% elif payment_data.states == 'tidak les' %}
+                            <p style="color: blue; font-weight: bold;">Tidak les</p>
+                            {% elif payment_data.states == 'belum belajar' %}
+                            <p style="color: purple; font-weight: bold;">Belum belajar</p>
                             {% endif %}
                         </td>
                         <td>
                             {% for staff in staff_list %}
-                                {% if staff.id == payment_data.last_edit_by %}
-                                    {% if payment_data.states == 'lunas' %}
-                                        {{ staff.first_name }} {{ staff.last_name }}
-                                    {% endif %}
-                                {% endif %}
+                            {% if staff.id == payment_data.last_edit_by %}
+                            {% if payment_data.states == 'lunas' %}
+                            {{ staff.first_name }} {{ staff.last_name }}
+                            {% endif %}
+                            {% endif %}
                             {% endfor %}
                         </td>
                     </tr>
                     {% endfor %}
                 </table>
                 <p>
-                    <b>Catatan:</b><i> Mohon pembayaran dilakukan sebelum tanggal 7 setiap bulan.</i>
+                    <b>Catatan:</b><i> Mohon pembayaran dilakukan sebelum tanggal {{ deadline_pembayaran }} setiap
+                        bulan.</i>
                 </p>
             </div>
         </div>
     </article>
 </body>
+
 </html>
