@@ -13,7 +13,7 @@ https://github.com/zagdiablo/PortalPembayaranBM_v2.git
 Go to the project directory
 
 ```bash
-cd /into/directory/RandomForest_Flask_Thesis
+cd /into/directory/PortalPembayaranBM_v2
 ```
 
 Install dependencies
