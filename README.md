@@ -7,7 +7,7 @@ Project portal pembayaran BM
 Clone the project
 
 ```bash
-https://github.com/zagdiablo/PortalPembayaranBM_v2.git
+git clone https://github.com/zagdiablo/PortalPembayaranBM_v2.git
 ```
 
 Go to the project directory
