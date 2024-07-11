@@ -8,3 +8,4 @@ Werkzeug==2.1.1
 WTForms==3.0.1
 wkhtmltopdf-pack-ng==0.12.3.0
 pdfkit==0.6.0
+zipp>=3.19.1 # not directly required, pinned by Snyk to avoid a vulnerability
